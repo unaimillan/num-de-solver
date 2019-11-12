@@ -15,7 +15,7 @@ N_i, N_f
 
 1 button or make reactive
 4 checkbox: turn on/off
-exact, euler, improved_euler, runge_kutta
+Exact, Euler, Improved Euler, Runge-Kutta
 
 3 plots:
 solution, pointwise_error, total_approximation_error
@@ -28,12 +28,13 @@ app.mainloop()
 """
 
 if __name__ == "__main__":
-    ex = Exact(0, math.sqrt(0.5), 3)
-    eu = Euler(0, math.sqrt(0.5), 3)
-    ieu = ImprovedEuler(0, math.sqrt(0.5), 3)
-    rk = RungeKutta(0, math.sqrt(0.5), 3)
+    X = 3
+    ex = Exact(0, math.sqrt(0.5), X)
+    eu = Euler(0, math.sqrt(0.5), X)
+    ieu = ImprovedEuler(0, math.sqrt(0.5), X)
+    rk = RungeKutta(0, math.sqrt(0.5), X)
 
-    n = 10
+    n = 25
     x = ex.x_list(n)
     y1 = ex.solve(n)
     y2 = eu.solve(n)

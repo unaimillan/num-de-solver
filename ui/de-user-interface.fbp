@@ -70,7 +70,7 @@
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxBoxSizer" expanded="0">
+                    <object class="wxBoxSizer" expanded="1">
                         <property name="minimum_size"></property>
                         <property name="name">bSizer3</property>
                         <property name="orient">wxVERTICAL</property>
@@ -186,7 +186,7 @@
                                         <property name="hidden">0</property>
                                         <property name="id">wxID_ANY</property>
                                         <property name="inc">0.1</property>
-                                        <property name="initial">0</property>
+                                        <property name="initial">0.000000</property>
                                         <property name="max">100</property>
                                         <property name="max_size"></property>
                                         <property name="maximize_button">0</property>
@@ -214,6 +214,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnSpinCtrlDouble">m_spinCtrlDouble1OnSpinCtrlDouble</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -339,6 +340,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnSpinCtrlDouble">m_spinCtrlDouble1OnSpinCtrlDouble</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -464,6 +466,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnSpinCtrlDouble">m_spinCtrlDouble1OnSpinCtrlDouble</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -587,6 +590,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnSpinCtrl">m_spinCtrl1OnSpinCtrl</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -710,6 +714,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnSpinCtrl">m_spinCtrl1OnSpinCtrl</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -833,6 +838,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnSpinCtrl">m_spinCtrl1OnSpinCtrl</event>
                                     </object>
                                 </object>
                             </object>
@@ -898,11 +904,11 @@
                                 <property name="wrap">-1</property>
                             </object>
                         </object>
-                        <object class="sizeritem" expanded="0">
+                        <object class="sizeritem" expanded="1">
                             <property name="border">5</property>
                             <property name="flag">wxEXPAND|wxTOP|wxBOTTOM|wxLEFT</property>
                             <property name="proportion">0</property>
-                            <object class="wxBoxSizer" expanded="0">
+                            <object class="wxBoxSizer" expanded="1">
                                 <property name="minimum_size"></property>
                                 <property name="name">bSizer6</property>
                                 <property name="orient">wxVERTICAL</property>
@@ -969,6 +975,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnCheckBox">m_checkBox5OnCheckBox</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -1033,6 +1040,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnCheckBox">m_checkBox5OnCheckBox</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -1097,6 +1105,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnCheckBox">m_checkBox5OnCheckBox</event>
                                     </object>
                                 </object>
                                 <object class="sizeritem" expanded="0">
@@ -1161,6 +1170,7 @@
                                         <property name="window_extra_style"></property>
                                         <property name="window_name"></property>
                                         <property name="window_style"></property>
+                                        <event name="OnCheckBox">m_checkBox5OnCheckBox</event>
                                     </object>
                                 </object>
                             </object>

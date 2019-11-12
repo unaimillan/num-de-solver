@@ -1,14 +1,18 @@
-import wx
-import wx.xrc
 import math
 import matplotlib
+import wx
+import wx.xrc
 from matplotlib.figure import Figure
+import numpy as np
+
+from solvers.exact import Exact
+from solvers.euler import Euler
+from solvers.improved_euler import ImprovedEuler
+from solvers.runge_kutta import RungeKutta
 
 matplotlib.use('wxagg')
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg
-from matplotlib.backends.backend_wxcairo import FigureCanvasWxCairo
 
-import numpy as np
 
 class MyFrame1(wx.Frame):
 
@@ -163,16 +167,13 @@ class MyFrame1(wx.Frame):
         bSizer4 = wx.BoxSizer(wx.VERTICAL)
 
         # self.m_panel4 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-        self.figure4 = Figure()
-        self.axes1 = self.figure4.add_subplot(311, title='Solution')
-        self.axes2 = self.figure4.add_subplot(312, title='Local approximation error')
-        self.axes3 = self.figure4.add_subplot(313, title='Total approximation error')
-        self.figure4.tight_layout()
+        self.figure4 = MyMatplotFigure()
         # self.subplot41 = self.figure4.add_subplot(3, 1, 2)
         # self.subplot41 = self.figure4.add_subplot(3, 1, 3)
         # self.subplot4.plot([0, 1, 2], [0, 10, 0])
-        self.m_panel4 = FigureCanvasWxCairo(self, wx.ID_ANY, self.figure4)
+        self.m_panel4 = FigureCanvasWxAgg(self, wx.ID_ANY, self.figure4)
         bSizer4.Add(self.m_panel4, 1, wx.EXPAND | wx.ALL, 5)
+        self.update_all_plots()
 
         """self.m_panel5 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
         figure = Figure()
@@ -193,27 +194,151 @@ class MyFrame1(wx.Frame):
         self.Centre(wx.BOTH)
 
         # Connect Events
+        self.m_spinCtrlDouble1.Bind(wx.EVT_SPINCTRLDOUBLE,
+                                    self.m_spinCtrlDouble1OnSpinCtrlDouble)
+        self.m_spinCtrlDouble11.Bind(wx.EVT_SPINCTRLDOUBLE,
+                                     self.m_spinCtrlDouble1OnSpinCtrlDouble)
+        self.m_spinCtrlDouble12.Bind(wx.EVT_SPINCTRLDOUBLE,
+                                     self.m_spinCtrlDouble1OnSpinCtrlDouble)
+        self.m_spinCtrl1.Bind(wx.EVT_SPINCTRL, self.m_spinCtrl1OnSpinCtrl)
+        self.m_spinCtrl11.Bind(wx.EVT_SPINCTRL, self.m_spinCtrl1OnSpinCtrl)
+        self.m_spinCtrl12.Bind(wx.EVT_SPINCTRL, self.m_spinCtrl1OnSpinCtrl)
+        self.m_checkBox5.Bind(wx.EVT_CHECKBOX, self.m_checkBox5OnCheckBox)
+        self.m_checkBox6.Bind(wx.EVT_CHECKBOX, self.m_checkBox5OnCheckBox)
+        self.m_checkBox7.Bind(wx.EVT_CHECKBOX, self.m_checkBox5OnCheckBox)
+        self.m_checkBox8.Bind(wx.EVT_CHECKBOX, self.m_checkBox5OnCheckBox)
         self.button_calc.Bind(wx.EVT_BUTTON, self.button_calcOnButtonClick)
+        self.Bind(wx.EVT_CHAR_HOOK, self.close_window)
 
     def __del__(self):
         pass
 
     # Virtual event handlers, overide them in your derived class
-    def button_calcOnButtonClick(self, event: wx.Event):
-        print("Buttons:", self.m_checkBox5.IsChecked(), self.m_checkBox6.IsChecked(), self.m_checkBox7.IsChecked())
-        print("Starting!")
-        for x in self.axes1.lines + self.axes1.collections:
-            x.remove()
-        x = np.arange(1, 10, 1)
-        y1 = np.sin(x)
-        y2 = np.sin(x+np.pi/4)
-        y3 = np.sin(x+np.pi/3)
-        y4 = np.sin(x+np.pi/2)
-        self.axes1.plot(x, y1, label="Try1", color='#1f77b4')
-        self.axes1.plot(x, y2, label="Try2", color='#ff7f0e')
-        self.axes1.plot(x, y3, label="Try3", color='#2ca02c')
-        self.axes1.plot(x, y4, label="Try4", color='#d62728')
-        self.axes1.legend()
-        self.m_panel4.draw()
-        print("Drawn!", len(self.m_panel4.figure.axes), len(self.axes1.lines))
+    def close_window(self, event):
+        if event.GetKeyCode() == wx.WXK_ESCAPE:
+            self.Close()
+        else:
+            event.Skip()
 
+    def m_spinCtrlDouble1OnSpinCtrlDouble(self, event):
+        self.button_calcOnButtonClick(event)
+
+    def m_spinCtrl1OnSpinCtrl(self, event):
+        self.button_calcOnButtonClick(event)
+
+    def m_checkBox5OnCheckBox(self, event):
+        self.button_calcOnButtonClick(event)
+
+    def button_calcOnButtonClick(self, event: wx.Event):
+        self.update_all_plots()
+
+    def update_all_plots(self):
+        print("Buttons:", self.m_checkBox5.IsChecked(),
+              self.m_checkBox6.IsChecked(), self.m_checkBox7.IsChecked(),
+              self.m_checkBox8.IsChecked())
+        print("Starting!")
+
+        self.figure4.x0 = float(self.m_spinCtrlDouble1.GetValue())
+        self.figure4.y0 = float(self.m_spinCtrlDouble11.GetValue())
+        self.figure4.X = float(self.m_spinCtrlDouble12.GetValue())
+        self.figure4.n = int(self.m_spinCtrl1.GetValue())
+        self.figure4.n_i = int(self.m_spinCtrl11.GetValue())
+        self.figure4.n_f = int(self.m_spinCtrl12.GetValue())
+        self.figure4.isExact = bool(self.m_checkBox5.IsChecked())
+        self.figure4.isEuler = bool(self.m_checkBox6.IsChecked())
+        self.figure4.isImprovedEuler = bool(self.m_checkBox7.IsChecked())
+        self.figure4.isRungeKutta = bool(self.m_checkBox8.IsChecked())
+
+        self.figure4.refresh()
+        self.m_panel4.draw()
+        print("Drawn!", len(self.m_panel4.figure.axes),
+              len(self.figure4.axes1.lines))
+
+
+class MyMatplotFigure(Figure):
+    def __init__(self):
+        super().__init__()
+        self.y0 = math.sqrt(1 / 2)
+        self.x0 = 0
+        self.X = 3
+        self.n = 15
+        self.n_i = 10
+        self.n_f = 20
+        self.isExact = True
+        self.isEuler = True
+        self.isImprovedEuler = True
+        self.isRungeKutta = True
+        self.axes1 = self.add_subplot(311, title='Solution')
+        self.axes2 = self.add_subplot(312,
+                                      title='Local approximation error')
+        self.axes3 = self.add_subplot(313,
+                                      title='Total approximation error')
+        self.set_tight_layout("True")
+
+    def refresh(self):
+        x0 = self.x0
+        y0 = self.y0
+        X = self.X
+        n = self.n
+        # X = 3
+        # y0 = math.sqrt(0.5)
+        ex = Exact(x0, y0, X)
+        eu = Euler(x0, y0, X)
+        ieu = ImprovedEuler(x0, y0, X)
+        rk = RungeKutta(x0, y0, X)
+
+        self.axes1.clear()
+        self.axes1.set_title('Solution')
+        # n = 25
+        x = ex.x_list(n)
+        y1 = ex.solve(n)
+        y2 = eu.solve(n)
+        y3 = ieu.solve(n)
+        y4 = rk.solve(n)
+        if self.isExact:
+            self.axes1.plot(x, y1, label="Exact", color='#1f77b4')
+        if self.isEuler:
+            self.axes1.plot(x, y2, label="Euler", color='#ff7f0e')
+        if self.isImprovedEuler:
+            self.axes1.plot(x, y3, label="Improved Euler", color='#2ca02c')
+        if self.isRungeKutta:
+            self.axes1.plot(x, y4, label="Runge-Kutta", color='#d62728')
+        self.axes1.legend()
+
+        self.axes2.clear()
+        self.axes2.set_title('Local approximation error')
+        # n = 25
+        x = ex.x_list(n)
+        y1 = ex.pointwise_error(n)
+        y2 = eu.pointwise_error(n)
+        y3 = ieu.pointwise_error(n)
+        y4 = rk.pointwise_error(n)
+        if self.isExact:
+            self.axes2.plot(x, y1, label="Exact", color='#1f77b4')
+        if self.isEuler:
+            self.axes2.plot(x, y2, label="Euler", color='#ff7f0e')
+        if self.isImprovedEuler:
+            self.axes2.plot(x, y3, label="Improved Euler", color='#2ca02c')
+        if self.isRungeKutta:
+            self.axes2.plot(x, y4, label="Runge-Kutta", color='#d62728')
+        self.axes2.legend()
+
+        self.axes3.clear()
+        self.axes3.set_title('Total approximation error')
+        # n_i = 10
+        # n_f = 51
+        n_i = self.n_i
+        n_f = self.n_f
+        x = np.arange(n_i, n_f)
+        y1 = ex.total_approximation_error(n_i, n_f)
+        y2 = eu.total_approximation_error(n_i, n_f)
+        y3 = ieu.total_approximation_error(n_i, n_f)
+        y4 = rk.total_approximation_error(n_i, n_f)
+        # self.axes3.plot(x, y1, label="Exact", color='#1f77b4')
+        if self.isEuler:
+            self.axes3.plot(x, y2, label="Euler", color='#ff7f0e')
+        if self.isImprovedEuler:
+            self.axes3.plot(x, y3, label="Improved Euler", color='#2ca02c')
+        if self.isRungeKutta:
+            self.axes3.plot(x, y4, label="Runge-Kutta", color='#d62728')
+        self.axes3.legend()

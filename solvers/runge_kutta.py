@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import numpy as np
 
 from solvers.exact import Exact
@@ -5,6 +7,7 @@ from solvers.exact import Exact
 
 class RungeKutta(Exact):
 
+    @lru_cache(maxsize=4096)
     def solve(self, n: int) -> np.array:
         t = self.x_list(n)
         y = np.full(n, self.y0)

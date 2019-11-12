@@ -134,6 +134,12 @@ class MyFrame1 ( wx.Frame ):
         self.Centre( wx.BOTH )
 
         # Connect Events
+        self.m_spinCtrlDouble1.Bind( wx.EVT_SPINCTRLDOUBLE, self.m_spinCtrlDouble1OnSpinCtrlDouble )
+        self.m_spinCtrlDouble11.Bind( wx.EVT_SPINCTRLDOUBLE, self.m_spinCtrlDouble1OnSpinCtrlDouble )
+        self.m_spinCtrlDouble12.Bind( wx.EVT_SPINCTRLDOUBLE, self.m_spinCtrlDouble1OnSpinCtrlDouble )
+        self.m_spinCtrl1.Bind( wx.EVT_SPINCTRL, self.m_spinCtrl1OnSpinCtrl )
+        self.m_spinCtrl11.Bind( wx.EVT_SPINCTRL, self.m_spinCtrl1OnSpinCtrl )
+        self.m_spinCtrl12.Bind( wx.EVT_SPINCTRL, self.m_spinCtrl1OnSpinCtrl )
         self.button_calc.Bind( wx.EVT_BUTTON, self.button_calcOnButtonClick )
 
     def __del__( self ):
@@ -141,6 +147,16 @@ class MyFrame1 ( wx.Frame ):
 
 
     # Virtual event handlers, overide them in your derived class
+    def m_spinCtrlDouble1OnSpinCtrlDouble( self, event ):
+        event.Skip()
+
+
+
+    def m_spinCtrl1OnSpinCtrl( self, event ):
+        event.Skip()
+
+
+
     def button_calcOnButtonClick( self, event ):
         event.Skip()
 

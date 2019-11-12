@@ -1,9 +1,11 @@
 import numpy as np
 import math
+from functools import lru_cache
 
 
 class Exact:
     @staticmethod
+    @lru_cache(maxsize=4096)
     def default_derivative(x: float, y: float):
         return x * y - x * y ** 3
 

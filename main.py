@@ -7,6 +7,8 @@ from solvers.exact import Exact
 from solvers.euler import Euler
 from solvers.improved_euler import ImprovedEuler
 from solvers.runge_kutta import RungeKutta
+from ui.markup_old import MyFrame1
+import wx
 
 """
 5 textfields:
@@ -28,22 +30,26 @@ app.mainloop()
 """
 
 if __name__ == "__main__":
-    X = 3
-    ex = Exact(0, math.sqrt(0.5), X)
-    eu = Euler(0, math.sqrt(0.5), X)
-    ieu = ImprovedEuler(0, math.sqrt(0.5), X)
-    rk = RungeKutta(0, math.sqrt(0.5), X)
-
-    n = 25
-    x = ex.x_list(n)
-    y1 = ex.solve(n)
-    y2 = eu.solve(n)
-    y3 = ieu.solve(n)
-    y4 = rk.solve(n)
-
-    plt.plot(x, y1, label="exact")
-    plt.plot(x, y2, label="euler")
-    plt.plot(x, y3, label="improved euler")
-    plt.plot(x, y4, label="runge kutta")
-    plt.legend()
-    plt.show()
+    app = wx.App()
+    frame = MyFrame1(None)
+    frame.Show()
+    app.MainLoop()
+    # X = 3
+    # ex = Exact(0, math.sqrt(0.5), X)
+    # eu = Euler(0, math.sqrt(0.5), X)
+    # ieu = ImprovedEuler(0, math.sqrt(0.5), X)
+    # rk = RungeKutta(0, math.sqrt(0.5), X)
+    #
+    # n = 25
+    # x = ex.x_list(n)
+    # y1 = ex.solve(n)
+    # y2 = eu.solve(n)
+    # y3 = ieu.solve(n)
+    # y4 = rk.solve(n)
+    #
+    # plt.plot(x, y1, label="exact")
+    # plt.plot(x, y2, label="euler")
+    # plt.plot(x, y3, label="improved euler")
+    # plt.plot(x, y4, label="runge kutta")
+    # plt.legend()
+    # plt.show()

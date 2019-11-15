@@ -15,23 +15,81 @@ Solution:
 3) Solving complementary we obtain $v(x)=k*e^{-x^2}$ and
    by method of variation of parameter we get the final solution
    for $v(x)=c_1e^{-x^2}+1$
-4) Than, substituting back $v=y^{-2}$ we get: $y^{-2}=c_1e^{-x^2}+1$,
-   which is $y=\sqrt{ \frac{1}{c_1e^{-x^2}+1} }$, 
-   $y=-\sqrt{ \frac{1}{c_1e^{-x^2}+1} }$
-5) With given IVP: $y(0)=\sqrt{\frac{1}{2}}$, we can derive formula     for $c_1=\frac{(1-y_0^2)e^{x_0^2}}{y_0^2}$ and compute $c_1$
+4) Than, substituting back $v=y^{-2}$ we get: 
+   $y^{-2}=c_1 \cdot e^{-x^2}+1$,
+   which is $y=\sqrt{ \frac{1}{c_1 \cdot e^{-x^2}+1} }$, 
+   $y=-\sqrt{ \frac{1}{c_1 \cdot e^{-x^2}+1} }$
+5) With given IVP: $y(0)=\sqrt{\frac{1}{2}}$, we can derive formula     for $c_1=\frac{(1-y_0^2)\cdot e^{x_0^2}}{y_0^2}$ and compute $c_1$
    for given particular case $c_1=1$
 
+There is **no points of discontinuity** on the given interval
+$x \in [0,3]$
+
+## Application
 
 
-## Source code
+
+## Source Code
+
+### Exact solution
+is computed with __exact_at_ function
 ```python
-t = self.x_list(n)
-y = np.full(n, self.y0)
-step = self.step(n)
-
-for i in range(1, n):
-    y[i] = y[i - 1] + step * self.derivative(t[i - 1], y[i - 1])
+def _exact_at(self, x: float):
+        return math.e ** (x ** 2 / 2) / \
+               math.sqrt(self.coef + math.e ** (x ** 2))
+```
+which is applied to a vector of points with length $n$
+over interval $(x_0, X)$
+```python
+def solve(self, n: int) -> np.array:
+        # Apply vectorized '_exact_at' to each x point
+        vfunc = np.vectorize(self._exact_at)
+        return vfunc(self.x_list(n))
 ```
 
+### Euler method
+is computed like so
+```python
+def solve(self, n: int) -> np.array:
+        t = self.x_list(n)
+        y = np.full(n, self.y0)
+        step = self.step(n)
+
+        for i in range(1, n):
+            y[i] = y[i - 1] + step * self.derivative(t[i - 1], y[i - 1])
+        return y
+```
+### Improved Euler method
+is computed like so
+```python
+def solve(self, n: int) -> np.array:
+        t = self.x_list(n)
+        y = np.full(n, self.y0)
+        step = self.step(n)
+
+        for i in range(1, n):
+            y_ = y[i - 1] + step * self.derivative(t[i - 1], y[i - 1])
+            y[i] = y[i - 1] + 0.5 * step * (self.derivative(t[i - 1], y[i - 1])
+                                            + self.derivative(t[i], y_))
+        return y
+```
+## Runge-Kutta method
+is computed like so
+```python
+def solve(self, n: int) -> np.array:
+        t = self.x_list(n)
+        y = np.full(n, self.y0)
+        step = self.step(n)
+
+        for i in range(1, n):
+            k1 = step * self.derivative(t[i - 1], y[i - 1])
+            k2 = step * self.derivative(t[i - 1] + step / 2, y[i - 1] + k1 / 2)
+            k3 = step * self.derivative(t[i - 1] + step / 2, y[i - 1] + k2 / 2)
+            k4 = step * self.derivative(t[i - 1] + step, y[i - 1] + k3)
+
+            y[i] = y[i - 1] + 1 / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+
+        return y
+```
 
 ## Numerical investigations

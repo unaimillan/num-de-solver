@@ -1,7 +1,18 @@
 # Differential Equations numerical assignment
 Made by: Mikhail Kuskov, B18-01
 
-## Exact solution
+- [Differential Equations numerical assignment](#differential-equations-numerical-assignment)
+  - [Analytical solution](#analytical-solution)
+  - [Application](#application)
+    - [Application GUI](#application-gui)
+  - [Source Code](#source-code)
+    - [Exact solution](#exact-solution)
+    - [Euler method](#euler-method)
+    - [Improved Euler method](#improved-euler-method)
+    - [Runge-Kutta method](#runge-kutta-method)
+  - [UML Class Diagram](#uml-class-diagram)
+
+## Analytical solution
 
 Given function
 $$f(x,y)=y'=xy-xy^3$$
@@ -27,7 +38,14 @@ $x \in [0,3]$
 
 ## Application
 
+Application interface seems to be intuitive.
+User can change $x_0,y_0,X,N$ to play with parameters of
+approximation and $N_i,N_f$ to see the dependency of methods'
+accuracy on $N$. Changes are reactively propagate and user interface
+updated accordingly to them
 
+### Application GUI
+![](static/GUI.png)
 
 ## Source Code
 
@@ -73,7 +91,7 @@ def solve(self, n: int) -> np.array:
                                             + self.derivative(t[i], y_))
         return y
 ```
-## Runge-Kutta method
+### Runge-Kutta method
 is computed like so
 ```python
 def solve(self, n: int) -> np.array:
@@ -92,4 +110,6 @@ def solve(self, n: int) -> np.array:
         return y
 ```
 
-## Numerical investigations
+## UML Class Diagram
+
+![](static/diagram.png)

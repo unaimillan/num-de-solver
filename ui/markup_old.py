@@ -306,14 +306,14 @@ class MyMatplotFigure(Figure):
         self.axes1.legend()
 
         self.axes2.clear()
-        self.axes2.set_title('Local approximation error')
+        self.axes2.set_title('Truncation error')
         # n = 25
         x = ex.x_list(n)
         y1 = ex.pointwise_error(n)
         y2 = eu.pointwise_error(n)
         y3 = ieu.pointwise_error(n)
         y4 = rk.pointwise_error(n)
-        if self.isExact:
+        if self.isExact and False:
             self.axes2.plot(x, y1, label="Exact", color='#1f77b4')
         if self.isEuler:
             self.axes2.plot(x, y2, label="Euler", color='#ff7f0e')

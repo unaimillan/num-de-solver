@@ -10,6 +10,7 @@ Made by: Mikhail Kuskov, B18-01
     - [Euler method](#euler-method)
     - [Improved Euler method](#improved-euler-method)
     - [Runge-Kutta method](#runge-kutta-method)
+  - [Numerical Investigation](#numerical-investigation)
   - [UML Class Diagram](#uml-class-diagram)
 
 ## Analytical solution
@@ -109,6 +110,27 @@ def solve(self, n: int) -> np.array:
 
         return y
 ```
+
+
+## Numerical Investigation
+
+We can see that with increasing $N$, the error of solutions is
+decreasing proportionally
+
+$x_0=0,y=\sqrt{\frac{1}{2}},X=3,N=5,N_i=10,N_f=50$
+![Screen1](static/Screen1.png)
+
+$x_0=0,y=\sqrt{\frac{1}{2}},X=3,N=5000,N_i=10,N_f=50$
+![Screen3](static/Screen3.png)
+
+$x_0=0,y=\sqrt{\frac{1}{2}},X=3,N=500,N_i=10,N_f=500$
+![Screen4](static/Screen4.png)
+
+$x_0=0,y=\sqrt{\frac{1}{2}},X=5,N=100,N_i=100,N_f=200$
+![Screen5](static/Screen5.png)
+
+As we see, with increasing $N$ the approximation of solution is
+increasing appropriately
 
 ## UML Class Diagram
 
